@@ -63,7 +63,7 @@ function add(a, b) {
     const currentNumber = parseFloat(displayValue);
 
     // Check if there is a pending calculation with a firstNumber and operator
-    if (firstNumber !== null && operator) {
+    if (secondNumber !== null && operator) {
       // Perform the previous calculation and update the display
       const result = operate(operator, firstNumber, currentNumber);
       updateDisplay(roundResult(result));
