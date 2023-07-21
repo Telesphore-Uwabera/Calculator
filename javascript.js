@@ -63,7 +63,7 @@ function add(a, b) {
     const currentNumber = parseFloat(displayValue);
 
     // Check if there is a pending calculation with a firstNumber and operator
-    if (secondNumber !== null && operator) {
+    if (firstNumber !== null && operator) {
       // Perform the previous calculation and update the display
       const result = operate(operator, firstNumber, currentNumber);
       updateDisplay(roundResult(result));
@@ -74,7 +74,7 @@ function add(a, b) {
       // If there is no pending calculation, set the current number as the first number
       firstNumber = currentNumber;
     }
-
+    
     // Store the clicked operator
     operator = clickedOperator;
   }
