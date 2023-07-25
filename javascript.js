@@ -1,139 +1,77 @@
-function add(a, b) {
-    return a + b;
-  }
+let currentOperation = '';
+let currentResult = '';
+let currentOperator = '';
 
-  function subtract(a, b) {
-    return a - b;
-  }
+function updateDisplay(button) {
+  const value = button.innerText;
+  currentOperation += value;
+  updateScreen();
+}
 
-  function multiply(a, b) {
-    return a * b;
-  }
+function updateScreen() {
+  const screenOperation = document.querySelector('.operation h1');
+  screenOperation.textContent = currentOperation;
+}
 
-  function divide(a, b) {
-    if (b === 0) {
-      return "ERROR: Division by zero";
-    }
-    return a / b;
-  }
+function showResults() {
+  const screenResult = document.querySelector('.result');
+  screenResult.textContent = currentResult;
+}
 
-  function operate(operator, a, b) {
-    switch (operator) {
-      case "+":
-        return add(a, b);
-      case "-":
-        return subtract(a, b);
-      case "*":
-        return multiply(a, b);
-      case "/":
-        return divide(a, b);
-      default:
-        return "ERROR: Invalid operator";
-    }
-  }
+function calculate() {
+  currentResult = eval(currentOperation);
+  currentOperation = currentResult.toString();
+  showResults();
+}
 
-  let firstNumber = null;
-  let operator = null;
-  let secondNumber = null;
+function clearDisplay() {
+  currentOperation = '';
+  currentResult = '';
+  updateScreen();
+  showResults();
+}
 
-  function updateDisplay(value) {
-    const display = document.querySelector(".display");
-    display.textContent = value;
-  }
+function setOperator(button) {
+  currentOperator = button.innerText;
+  currentOperation += currentOperator;
+  updateScreen();
+}
 
-  function handleNumberClick(clickedNumber) {
-    const displayValue = document.querySelector(".display").textContent;
+function backspace() {
+  currentOperation = currentOperation.slice(0, -1);
+  updateScreen();
+}
 
-    if (displayValue === "0" || operator === "=") {
-      updateDisplay(clickedNumber);
-    } else {
-      updateDisplay(displayValue + clickedNumber);
-    }
-  }
+// Add event listeners to the number buttons and operator buttons
+const numberButtons = document.querySelectorAll('.button.number');
+const operatorButtons = document.querySelectorAll('.button.operator');
 
-  function handleOperatorClick(clickedOperator) {
-    const displayValue = document.querySelector(".display").textContent;
-    const currentNumber = parseFloat(displayValue);
-
-    if (firstNumber !== null && operator) {
-      const result = operate(operator, firstNumber, currentNumber);
-      updateDisplay(roundResult(result));
-
-      firstNumber = result;
-    } else {
-      firstNumber = currentNumber;
-    }
-
-    operator = clickedOperator;
-  }
-
-  function handleEqualsClick() {
-    const displayValue = document.querySelector(".display").textContent;
-    const currentNumber = parseFloat(displayValue);
-
-    if (firstNumber !== null && operator) {
-      // Perform the final calculation and update the display
-      const result = operate(operator, firstNumber, currentNumber);
-
-      if (operator === "/" && currentNumber === 0) {
-        updateDisplay("ERROR: Division by zero");
-      } else {
-        updateDisplay(roundResult(result));
-      }
-      operator = null;
-      secondNumber = null;
-    }
-  }
-
-  function handleClearClick() {
-    // Clear the calculator data and reset the display
-    firstNumber = null;
-    operator = null;
-    updateDisplay(0);
-  }
-  function handleBackspaceClick() {
-    const displayValue = document.querySelector(".display").textContent;
-    const updatedDisplayValue = displayValue.slice(0, -1);
-
-    updateDisplay(updatedDisplayValue);
-  }
-
-  function handleDecimalClick() {
-    const displayValue = document.querySelector(".display").textContent;
-
-    if (!displayValue.includes(".")) {
-      updateDisplay(displayValue + ".");
-    }
-  }
-  function roundResult(result) {
-    const decimalPlaces = 5; // Set the number of decimal places you want to display
-    return +result.toFixed(decimalPlaces);
-  }
-
-  const numberButtons = document.querySelectorAll(".number");
-  numberButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      const clickedNumber = button.dataset.value;
-      handleNumberClick(clickedNumber);
-    });
+numberButtons.forEach((button) => {
+  button.addEventListener('click', () => {
+    updateDisplay(button);
   });
+});
 
-  const operatorButtons = document.querySelectorAll(".operator");
-  operatorButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      const clickedOperator = button.dataset.value;
-      handleOperatorClick(clickedOperator);
-    });
+operatorButtons.forEach((button) => {
+  button.addEventListener('click', () => {
+    setOperator(button);
   });
-  const equalsButton = document.getElementById("equals");
-  equalsButton.addEventListener("click", handleEqualsClick);
+});
 
-  const clearButton = document.getElementById("clear");
-  clearButton.addEventListener("click", handleClearClick);
+// Add event listener to the equals button (=) to calculate the result
+const equalsButton = document.getElementById('equals');
+equalsButton.addEventListener('click', () => {
+  calculate();
+});
 
-  const backspaceButton = document.getElementById("backspace");
-  backspaceButton.addEventListener("click", handleBackspaceClick);
+// Add event listener to the clear button (C) to clear the display
+const clearButton = document.getElementById('clear');
+clearButton.addEventListener('click', () => {
+  clearDisplay();
+});
 
-  const decimalButton = document.getElementById("decimal");
-  decimalButton.addEventListener("click", handleDecimalClick);
-  
+// Add event listener to the backspace button (⌫) to remove the last character
+const backspaceButton = document.getElementById('backspace');
+backspaceButton.addEventListener('click', () => {
+  backspace();
+});
