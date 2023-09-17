@@ -59,4 +59,5 @@ Contributions to this project are welcome. You can contribute by improving the c
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
 The link to my calculator app is https://telesphore-uwabera.github.io/Calculator/
